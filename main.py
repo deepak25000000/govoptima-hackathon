@@ -12,9 +12,14 @@ import subprocess
 import csv
 from io import StringIO
 
-# Force UTF-8 for Windows Console to prevent crashes
-sys.stdout.reconfigure(encoding='utf-8')
-sys.stderr.reconfigure(encoding='utf-8')
+
+# Force UTF-8 for Windows Console to prevent crashes (skip on Linux/Render)
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+except AttributeError:
+    pass  # Linux systems don't need this
+
 
 app = FastAPI(title="Governance Stress Intelligence Platform")
 
@@ -59,7 +64,13 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
+# Initialize database (optional, may fail on read-only filesystems like Render)
+try:
+    init_db()
+except Exception as e:
+    print(f"Warning: Could not initialize database: {e}")
+    print("Continuing without comment system...")
+
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
