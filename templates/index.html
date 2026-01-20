@@ -332,24 +332,52 @@
     </div>
 
     <script>
-        const API = 'http://localhost:8000/api';
+        // Dynamic API URL - works both locally and on deployed server
+        const API = window.location.hostname === 'localhost'
+            ? 'http://localhost:8000/api'
+            : '/api';
         let charts = {};
 
-        // Initialize
+        // Initialize dashboard
         async function init() {
-            const res = await fetch(`${API}/districts`);
-            const data = await res.json();
+            try {
+                console.log('Initializing dashboard...');
+                const res = await fetch(`${API}/districts`);
 
-            // Populate filters
-            const filters = ['districtFilter', 'districtA', 'districtB'];
-            filters.forEach(id => {
-                const select = document.getElementById(id);
-                data.districts.forEach(d => {
-                    select.innerHTML += `<option value="${d}">${d}</option>`;
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                console.log('Districts loaded:', data.districts.length);
+
+                // Populate all district filters
+                const filters = ['districtFilter', 'districtA', 'districtB'];
+                filters.forEach(id => {
+                    const select = document.getElementById(id);
+                    if (select) {
+                        // Clear loading message for main filter
+                        if (id === 'districtFilter') {
+                            select.innerHTML = '<option value="">All Districts (Statewide View)</option>';
+                        }
+
+                        // Add all districts
+                        data.districts.sort().forEach(d => {
+                            const option = document.createElement('option');
+                            option.value = d;
+                            option.textContent = d;
+                            select.appendChild(option);
+                        });
+                        console.log(`Populated ${id} with ${data.districts.length} districts`);
+                    }
                 });
-            });
 
-            await refreshAllData();
+                await refreshAllData();
+                console.log('Dashboard initialization complete!');
+            } catch (error) {
+                console.error('Error initializing dashboard:', error);
+                alert('Error loading districts. Please refresh the page.');
+            }
         }
 
         // Refresh all data

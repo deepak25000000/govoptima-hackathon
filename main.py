@@ -1,22 +1,16 @@
-
-from fastapi.responses import HTMLResponse
-
-@app.get("/", response_class=HTMLResponse)
-def root():
-    return """
-    <h1>GovOptima Hackathon Project</h1>
-    <p>FastAPI backend is running successfully 🚀</p>
-    <p>Visit <a href="/docs">/docs</a> for API documentation.</p>
-    """
 from fastapi import FastAPI, Query, Form, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from analysis import GovernanceAnalyst
 import os
 import json
 import sys
 import sqlite3
 import subprocess
+import csv
+from io import StringIO
 
 # Force UTF-8 for Windows Console to prevent crashes
 sys.stdout.reconfigure(encoding='utf-8')
@@ -31,6 +25,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve static files and templates
+templates = Jinja2Templates(directory="templates")
 
 data_path = os.getcwd() # Use current working directory
 analyst = GovernanceAnalyst(data_path)
