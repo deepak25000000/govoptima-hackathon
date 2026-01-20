@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovOptima | Maharashtra Resource Intelligence Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .main-container {
+            background: white;
+            min-height: 100vh;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.3);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            padding: 1.5rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <header class="bg-white border-b-4 border-indigo-600 sticky top-0 z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-orange-500 via-white to-green-600 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🇮🇳</span>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold gradient-text">GovOptima Intelligence Platform</h1>
+                            <p class="text-sm text-gray-600">Maharashtra State | Resource Optimization & Migration
+                                Analytics</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="badge badge-success">● LIVE</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-6 py-8">
+
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+                <div class="stat-card">
+                    <p class="text-sm opacity-90">Total Enrollments</p>
+                    <h3 id="metric1" class="text-3xl font-bold mt-1">-</h3>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <p class="text-sm opacity-90">Biometric Updates</p>
+                    <h3 id="metric2" class="text-3xl font-bold mt-1">-</h3>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <p class="text-sm opacity-90">Demographic Updates</p>
+                    <h3 id="metric3" class="text-3xl font-bold mt-1">-</h3>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <p class="text-sm opacity-90">Avg Migration Score</p>
+                    <h3 id="metric4" class="text-3xl font-bold mt-1">-</h3>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <p class="text-sm opacity-90">Avg Stress Index</p>
+                    <h3 id="metric5" class="text-3xl font-bold mt-1">-</h3>
+                </div>
+            </div>
+
+            <!-- District Filter -->
+            <div class="card mb-8">
+                <div class="flex items-center gap-4">
+                    <label class="font-semibold text-gray-700">Filter by District:</label>
+                    <select id="districtFilter" onchange="applyFilter()"
+                        class="flex-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-indigo-600 focus:outline-none">
+                        <option value="">All Districts (Statewide View)</option>
+                    </select>
+                    <button onclick="exportData()" class="btn-primary">📥 Export Report</button>
+                </div>
+            </div>
+
+            <!-- Resource Allocation & Migration Alerts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+                <!-- Resource Recommendations -->
+                <div class="card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">🎯 Resource Allocation</h2>
+                        <button onclick="loadResourceData()" class="text-sm btn-primary py-2 px-4">Calculate</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-center">
+                            <p class="text-sm text-blue-700">Kits Required</p>
+                            <p id="totalKits" class="text-3xl font-bold text-blue-600">-</p>
+                        </div>
+                        <div class="bg-purple-50 border-2 border-purple-200 rounded-lg p-4 text-center">
+                            <p class="text-sm text-purple-700">Staff Required</p>
+                            <p id="totalStaff" class="text-3xl font-bold text-purple-600">-</p>
+                        </div>
+                    </div>
+                    <div id="resourceTable" class="max-h-64 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-8">Click "Calculate" to load recommendations</p>
+                    </div>
+                </div>
+
+                <!-- Migration Alerts -->
+                <div class="card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">🚨 Migration Alerts</h2>
+                        <button onclick="loadMigrationData()" class="text-sm btn-primary py-2 px-4">Load Alerts</button>
+                    </div>
+                    <div class="bg-orange-50 border-2 border-orange-200 rounded-lg p-4 text-center mb-4">
+                        <p class="text-sm text-orange-700">High-Migration Districts</p>
+                        <p id="migrationCount" class="text-3xl font-bold text-orange-600">-</p>
+                    </div>
+                    <div id="migrationTable" class="max-h-64 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-8">Click "Load Alerts" to see migration patterns</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Cost Analysis & Efficiency -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+                <!-- Cost Analysis -->
+                <div class="card">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">💰 Cost & ROI Analysis</h2>
+                    <button onclick="loadCostData()" class="btn-primary w-full mb-4">Calculate Savings</button>
+                    <div id="costData" class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                            <span class="text-gray-700">Operational Cost</span>
+                            <span id="opCost" class="font-bold text-gray-900">-</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                            <span class="text-gray-700">Infrastructure Investment</span>
+                            <span id="infraCost" class="font-bold text-gray-900">-</span>
+                        </div>
+                        <div
+                            class="flex justify-between items-center p-3 bg-green-50 border-2 border-green-200 rounded">
+                            <span class="text-green-700 font-semibold">💡 Potential Savings</span>
+                            <span id="savings" class="font-bold text-green-600 text-lg">-</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-blue-50 border-2 border-blue-200 rounded">
+                            <span class="text-blue-700">ROI Percentage</span>
+                            <span id="roi" class="font-bold text-blue-600">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Efficiency Metrics -->
+                <div class="card">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">📊 System Performance</h2>
+                    <button onclick="loadEfficiencyData()" class="btn-primary w-full mb-4">Update Metrics</button>
+                    <div id="efficiencyData" class="space-y-3">
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="text-sm text-gray-600">Total Operations Processed</p>
+                            <p id="totalOps" class="text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-red-50 border-2 border-red-200 p-3 rounded text-center">
+                                <p class="text-xs text-red-700">High Stress</p>
+                                <p id="highStress" class="text-xl font-bold text-red-600">-</p>
+                            </div>
+                            <div class="bg-orange-50 border-2 border-orange-200 p-3 rounded text-center">
+                                <p class="text-xs text-orange-700">High Migration</p>
+                                <p id="highMigration" class="text-xl font-bold text-orange-600">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="text-sm text-gray-600">Avg Ops per District</p>
+                            <p id="avgOps" class="text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="card">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">📈 District Stress Heatmap</h2>
+                    <canvas id="heatmapChart"></canvas>
+                </div>
+                <div class="card">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">📉 Temporal Trends</h2>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- District Comparison Tool -->
+            <div class="card mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">⚖️ District Comparison Tool</h2>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">District A</label>
+                        <select id="districtA" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2"></select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">District B</label>
+                        <select id="districtB" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2"></select>
+                    </div>
+                </div>
+                <button onclick="compareDistricts()" class="btn-primary">Compare</button>
+                <div id="comparisonResult" class="mt-4"></div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-50 border-t mt-12">
+            <div class="max-w-7xl mx-auto px-6 py-6">
+                <div class="flex justify-between items-center text-sm text-gray-600">
+                    <p>🇮🇳 Government of Maharashtra - Digital Governance Department</p>
+                    <p>Powered by GovOptima Analytics Engine</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8000/api';
+        let charts = {};
+
+        // Initialize
+        async function init() {
+            const res = await fetch(`${API}/districts`);
+            const data = await res.json();
+
+            // Populate filters
+            const filters = ['districtFilter', 'districtA', 'districtB'];
+            filters.forEach(id => {
+                const select = document.getElementById(id);
+                data.districts.forEach(d => {
+                    select.innerHTML += `<option value="${d}">${d}</option>`;
+                });
+            });
+
+            await refreshAllData();
+        }
+
+        // Refresh all data
+        async function refreshAllData() {
+            await loadStats();
+            await loadCharts();
+        }
+
+        // Apply filter
+        async function applyFilter() {
+            await loadStats();
+            await loadCharts();
+        }
+
+        // Load stats
+        async function loadStats() {
+            const dist = document.getElementById('districtFilter').value;
+            const q = dist ? `?district=${dist}` : '';
+
+            const stats = await (await fetch(`${API}/stats${q}`)).json();
+            document.getElementById('metric1').textContent = formatNum(stats.total_enrollment);
+            document.getElementById('metric2').textContent = formatNum(stats.total_biometric);
+            document.getElementById('metric3').textContent = formatNum(stats.total_demographic);
+            document.getElementById('metric4').textContent = stats.avg_migration_score.toFixed(2);
+            document.getElementById('metric5').textContent = stats.avg_stress_index.toFixed(1);
+        }
+
+        // Load charts
+        async function loadCharts() {
+            const dist = document.getElementById('districtFilter').value;
+            const q = dist ? `?district=${dist}` : '';
+
+            const heatData = await (await fetch(`${API}/stress_heatmap`)).json();
+            const trends = await (await fetch(`${API}/trends${q}`)).json();
+
+            updateHeatmap(heatData);
+            updateTrends(trends);
+        }
+
+        // Update heatmap
+        function updateHeatmap(data) {
+            const ctx = document.getElementById('heatmapChart').getContext('2d');
+            if (charts.heat) charts.heat.destroy();
+
+            const sorted = data.sort((a, b) => b.stress_index - a.stress_index).slice(0, 15);
+
+            charts.heat = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sorted.map(d => d.district),
+                    datasets: [{
+                        label: 'Stress Index',
+                        data: sorted.map(d => d.stress_index),
+                        backgroundColor: sorted.map(d => d.stress_index > 200 ? '#ef4444' : '#6366f1'),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Update trends
+        function updateTrends(data) {
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            if (charts.trend) charts.trend.destroy();
+
+            charts.trend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => new Date(d.date).toLocaleDateString()),
+                    datasets: [
+                        {
+                            label: 'Stress Index',
+                            data: data.map(d => d.stress_index),
+                            borderColor: '#ef4444',
+                            tension: 0.4,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+
+        // Load resource data with ACCURATE VALUES - FILTERED BY DISTRICT
+        async function loadResourceData() {
+            const dist = document.getElementById('districtFilter').value;
+            const q = dist ? `?district=${dist}` : '';
+            const res = await fetch(`${API}/resource_recommendations${q}`); // Changed endpoint to include q
+            const data = await res.json();
+
+            if (dist) {
+                // Single district view
+                // The API should return recommendations for the specific district if 'q' is present.
+                // Assuming data.recommendations will contain only one entry or the relevant one.
+                const districtInfo = data.recommendations[dist]; // Assuming the API returns an object keyed by district
+
+                if (districtInfo) {
+                    document.getElementById('totalKits').textContent = districtInfo.recommended_kits.toLocaleString();
+                    document.getElementById('totalStaff').textContent = districtInfo.recommended_staff.toLocaleString();
+
+                    const priority = districtInfo.priority;
+                    const badge = priority === 'High' ? 'badge-danger' : priority === 'Medium' ? 'badge-warning' : 'badge-success';
+
+                    let html = '<table><thead><tr><th>District</th><th>Kits</th><th>Staff</th><th>Priority</th></tr></thead><tbody>';
+                    html += `<tr>
+                        <td><strong>${dist}</strong></td>
+                        <td>${districtInfo.recommended_kits}</td>
+                        <td>${districtInfo.recommended_staff}</td>
+                        <td><span class="badge ${badge}">${priority}</span></td>
+                    </tr>`;
+                    html += '</tbody></table>';
+                    document.getElementById('resourceTable').innerHTML = html;
+                } else {
+                    // No data for the selected district
+                    document.getElementById('totalKits').textContent = '-';
+                    document.getElementById('totalStaff').textContent = '-';
+                    document.getElementById('resourceTable').innerHTML = '<p class="text-gray-600">No resource recommendations for this district.</p>';
+                }
+
+            } else {
+                // All districts view (original logic)
+                document.getElementById('totalKits').textContent = data.total_kits_needed.toLocaleString();
+                document.getElementById('totalStaff').textContent = data.total_staff_needed.toLocaleString();
+
+                let html = '<table><thead><tr><th>District</th><th>Kits</th><th>Staff</th><th>Priority</th></tr></thead><tbody>';
+                Object.entries(data.recommendations).slice(0, 10).forEach(([district, info]) => {
+                    const badge = info.priority === 'High' ? 'badge-danger' : info.priority === 'Medium' ? 'badge-warning' : 'badge-success';
+                    html += `<tr>
+                        <td><strong>${district}</strong></td>
+                        <td>${info.recommended_kits}</td>
+                        <td>${info.recommended_staff}</td>
+                        <td><span class="badge ${badge}">${info.priority}</span></td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('resourceTable').innerHTML = html;
+            }
+        }
+
+        // Load migration data with DETAILED LEVELS - FILTERED BY DISTRICT
+        async function loadMigrationData() {
+            const dist = document.getElementById('districtFilter').value;
+            const res = await fetch(`${API}/migration_alerts`);
+            const data = await res.json();
+
+            // Filter by selected district if one is selected
+            let displayAlerts = data.alerts;
+            if (dist) {
+                displayAlerts = data.alerts.filter(alert => alert.district === dist);
+            }
+
+            // Update count based on filtered data
+            document.getElementById('migrationCount').textContent = dist ? displayAlerts.length : data.total_high_migration_districts;
+
+            // Show breakdown of alert levels (hide if single district selected)
+            let breakdown = '';
+            if (data.alert_breakdown && !dist) {
+                breakdown = `
+                    <div class="grid grid-cols-5 gap-2 mb-4 text-xs">
+                        <div class="bg-red-50 border border-red-200 p-2 rounded text-center">
+                            <p class="text-red-700 font-bold">${data.alert_breakdown.very_high}</p>
+                            <p class="text-red-600">Very High</p>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 p-2 rounded text-center">
+                            <p class="text-orange-700 font-bold">${data.alert_breakdown.high}</p>
+                            <p class="text-orange-600">High</p>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 p-2 rounded text-center">
+                            <p class="text-blue-700 font-bold">${data.alert_breakdown.normal}</p>
+                            <p class="text-blue-600">Normal</p>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 p-2 rounded text-center">
+                            <p class="text-green-700 font-bold">${data.alert_breakdown.low}</p>
+                            <p class="text-green-600">Low</p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 p-2 rounded text-center">
+                            <p class="text-gray-700 font-bold">${data.alert_breakdown.very_low}</p>
+                            <p class="text-gray-600">Very Low</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Build detailed table using filtered alerts
+            let html = breakdown + '<table><thead><tr><th>District</th><th>Score</th><th>Updates</th><th>Level</th></tr></thead><tbody>';
+            displayAlerts.forEach(alert => {
+                let badge = 'badge-success';
+                if (alert.alert_level === 'Very High') badge = 'badge-danger';
+                else if (alert.alert_level === 'High') badge = 'badge-warning';
+                else if (alert.alert_level === 'Normal') badge = 'badge badge-primary';
+
+                html += `<tr>
+                    <td><strong>${alert.district}</strong></td>
+                    <td>${alert.migration_score.toFixed(2)}/10</td>
+                    <td>${alert.total_updates.toLocaleString()}</td>
+                    <td><span class="badge ${badge}">${alert.alert_level}</span></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('migrationTable').innerHTML = html;
+        }
+
+        // Load cost data with ACCURATE RUPEE VALUES - FILTERED BY DISTRICT
+        async function loadCostData() {
+            const dist = document.getElementById('districtFilter').value;
+            const q = dist ? `?district=${dist}` : '';
+            const statsRes = await fetch(`${API}/stats${q}`);
+            const stats = await statsRes.json();
+
+            // Calculate costs for selected district or all
+            const COST_PER_ENROLLMENT = 150;
+            const COST_PER_BIOMETRIC = 75;
+            const COST_PER_DEMOGRAPHIC = 50;
+
+            const opCost = (stats.total_enrollment * COST_PER_ENROLLMENT +
+                stats.total_biometric * COST_PER_BIOMETRIC +
+                stats.total_demographic * COST_PER_DEMOGRAPHIC) / 10_000_000;
+
+            const kitsNeeded = Math.max(1, Math.ceil(stats.avg_stress_index / 50));
+            const staffNeeded = Math.max(1, Math.ceil((stats.total_enrollment + stats.total_biometric + stats.total_demographic) / 10000));
+            const infraCost = (kitsNeeded * 500000 + staffNeeded * 600000) / 10_000_000;
+            const savings = opCost * 0.10;
+            const roi = infraCost > 0 ? ((savings / infraCost) * 100).toFixed(1) : 0;
+
+            // Display accurate values with rupee formatting
+            document.getElementById('opCost').textContent = `₹${opCost.toFixed(2)} Cr`;
+            document.getElementById('infraCost').textContent = `₹${infraCost.toFixed(2)} Cr`;
+            document.getElementById('savings').textContent = `₹${savings.toFixed(2)} Cr`;
+            document.getElementById('roi').textContent = `${roi}%`;
+        }
+
+        // Load efficiency data with DISTRICT BREAKDOWN
+        async function loadEfficiencyData() {
+            const res = await fetch(`${API}/efficiency_metrics`);
+            const data = await res.json();
+
+            // Update main metrics
+            document.getElementById('totalOps').textContent = data.total_operations.toLocaleString();
+            document.getElementById('highStress').textContent = data.high_stress_districts;
+            document.getElementById('highMigration').textContent = data.high_migration_districts;
+            document.getElementById('avgOps').textContent = data.avg_operations_per_district.toLocaleString();
+        }
+
+        // Compare districts
+        async function compareDistricts() {
+            const distA = document.getElementById('districtA').value;
+            const distB = document.getElementById('districtB').value;
+
+            if (!distA || !distB) return alert('Please select both districts');
+
+            const statsA = await (await fetch(`${API}/stats?district=${distA}`)).json();
+            const statsB = await (await fetch(`${API}/stats?district=${distB}`)).json();
+
+            let html = `<table>
+                <thead><tr><th>Metric</th><th>${distA}</th><th>${distB}</th><th>Difference</th></tr></thead>
+                <tbody>
+                <tr>
+                    <td>Total Enrollments</td>
+                    <td>${formatNum(statsA.total_enrollment)}</td>
+                    <td>${formatNum(statsB.total_enrollment)}</td>
+                    <td>${formatNum(statsA.total_enrollment - statsB.total_enrollment)}</td>
+                </tr>
+                <tr>
+                    <td>Stress Index</td>
+                    <td>${statsA.avg_stress_index.toFixed(1)}</td>
+                    <td>${statsB.avg_stress_index.toFixed(1)}</td>
+                    <td>${(statsA.avg_stress_index - statsB.avg_stress_index).toFixed(1)}</td>
+                </tr>
+                <tr>
+                    <td>Migration Score</td>
+                    <td>${statsA.avg_migration_score.toFixed(2)}</td>
+                    <td>${statsB.avg_migration_score.toFixed(2)}</td>
+                    <td>${(statsA.avg_migration_score - statsB.avg_migration_score).toFixed(2)}</td>
+                </tr>
+                </tbody>
+            </table>`;
+
+            document.getElementById('comparisonResult').innerHTML = html;
+        }
+
+        // Export data - REAL DOWNLOAD
+        async function exportData() {
+            try {
+                // Fetch the CSV report
+                const response = await fetch(`${API}/export_report`);
+                const blob = await response.blob();
+
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'govoptima_analytics_report.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                alert('✅ Analytics report downloaded successfully!');
+            } catch (error) {
+                alert('Error downloading report: ' + error.message);
+            }
+        }
+
+        // Utility
+        function formatNum(n) {
+            return n.toLocaleString();
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+
+</html>
