@@ -1,3 +1,13 @@
+
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+def root():
+    return """
+    <h1>GovOptima Hackathon Project</h1>
+    <p>FastAPI backend is running successfully 🚀</p>
+    <p>Visit <a href="/docs">/docs</a> for API documentation.</p>
+    """
 from fastapi import FastAPI, Query, Form, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
