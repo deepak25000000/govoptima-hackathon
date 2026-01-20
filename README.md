@@ -220,8 +220,4 @@ DATA_HACKTHON/
 
 ---
 
-**🏆 Ready to Win!**
 
-**Server:** http://localhost:8000  
-**For:** National Hackathon 2026  
-**Prize:** ₹2 Lakhs
